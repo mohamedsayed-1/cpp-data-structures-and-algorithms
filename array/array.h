@@ -12,6 +12,10 @@ class Array{
         Array& operator=(const Array& other);
         Array(const Array& other);
         ~Array();
+        bool isFull()const;
+        bool isEmpty()const;
+        size_t capacity()const;
+        size_t size()const;
 };
 }
 
@@ -53,4 +57,24 @@ ds::Array<Type>::Array(const Array& other){
 template <class Type>
 ds::Array<Type>::~Array(){
     delete[] elements;
+}
+
+template <class Type>
+bool ds::Array<Type>::isFull()const{
+    return length >= maxSize;
+}
+
+template <class Type>
+bool ds::Array<Type>::isEmpty()const{
+    return length == 0;
+}
+
+template <class Type>
+size_t ds::Array<Type>::capacity()const{
+    return maxSize;
+}
+
+template <class Type>
+size_t ds::Array<Type>::size()const{
+    return length;
 }
