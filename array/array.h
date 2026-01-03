@@ -21,6 +21,8 @@ class Array{
         void display()const;
         void append(const Type& element);
         void insert(size_t index,const Type& newItem);
+        // search the array for a given value, and return its index if found and -1 if not found
+        int search(const Type& key)const;
 };
 }
 
@@ -117,4 +119,13 @@ void ds::Array<Type>::insert(size_t index, const Type& newItem){
     }
     elements[index] = newItem;
     length++;
+}
+
+template <class Type>
+int ds::Array<Type>::search(const Type& key)const{
+    for (size_t i = 0; i < length; i++)
+    {
+        if(elements[i] == key) return i;
+    }
+    return -1;
 }
