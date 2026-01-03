@@ -19,6 +19,8 @@ class Array{
         size_t size()const;
         Type at(int index)const;
         void display()const;
+        void append(const Type& element);
+        void insert(size_t index,const Type& newItem);
 };
 }
 
@@ -96,4 +98,23 @@ void ds::Array<Type>::display()const{
         std::cout << elements[i] << "  ";
     }
     std::cout << std::endl;
+}
+
+template <class Type>
+void ds::Array<Type>::append(const Type& element){
+    if (isFull()) throw std::runtime_error("array is full");
+    elements[length] = element;
+    length++;
+}
+
+template <class Type>
+void ds::Array<Type>::insert(size_t index, const Type& newItem){
+    if (index > length) throw std::out_of_range ("invalid index");
+    if (isFull()) throw std::runtime_error("array is full");
+    for (size_t i = length; i > index; i--)
+    {
+        elements[i] = elements[i - 1];
+    }
+    elements[index] = newItem;
+    length++;
 }
