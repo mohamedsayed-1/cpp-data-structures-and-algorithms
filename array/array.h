@@ -25,6 +25,8 @@ class Array{
         int search(const Type& key)const;
         void erase(size_t index);
         void clear();
+        // fill the rest of the array (or the entire array if it's empty) with one value
+        void fill(const Type& element);
 };
 }
 
@@ -145,4 +147,11 @@ void ds::Array<Type>::erase(size_t index){
 template <class Type>
 void ds::Array<Type>::clear(){ 
     length = 0; 
+}
+
+template <class Type>
+void ds::Array<Type>::fill(const Type& element){
+    while(!isFull()){
+        append(element);
+    }
 }
