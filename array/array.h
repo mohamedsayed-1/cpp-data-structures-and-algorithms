@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <stdexcept>
 
 namespace ds{
 template <class Type>
@@ -16,6 +17,8 @@ class Array{
         bool isEmpty()const;
         size_t capacity()const;
         size_t size()const;
+        Type at(int index)const;
+        void display()const;
 };
 }
 
@@ -77,4 +80,20 @@ size_t ds::Array<Type>::capacity()const{
 template <class Type>
 size_t ds::Array<Type>::size()const{
     return length;
+}
+
+template <class Type>
+Type ds::Array<Type>::at(int index)const{
+    if (index < 0 || index >= length) throw std::out_of_range("invalid index");
+    return elements[index];
+}
+
+template <class Type>
+void ds::Array<Type>::display()const{
+    for (size_t i = 0; i < length; i++)
+    {
+        if (!(i % 10) && i != 0) std::cout << std::endl;
+        std::cout << elements[i] << "  ";
+    }
+    std::cout << std::endl;
 }
