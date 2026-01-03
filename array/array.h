@@ -27,6 +27,8 @@ class Array{
         void clear();
         // fill the rest of the array (or the entire array if it's empty) with one value
         void fill(const Type& element);
+        void enlarge(size_t newSize);
+        void merge(const Array& other);
 };
 }
 
@@ -154,4 +156,25 @@ void ds::Array<Type>::fill(const Type& element){
     while(!isFull()){
         append(element);
     }
+}
+
+template <class Type>
+void ds::Array<Type>::enlarge(size_t newSize){
+    if(newSize <= maxSize) throw std::runtime_error("new size must be greater than current capacity");
+    Type* newArr = new Type[newSize];
+    for (size_t i = 0; i < length; i++) newArr[i] = elements[i];
+    delete[] elements;
+    elements = newArr;
+    maxSize = newSize;
+}
+
+template <class Type>
+void ds::Array<Type>::merge(const ds::Array<Type>& other){
+    size_t newLength = length + other.length; 
+    if (newLength > maxSize) enlarge(newLength);
+    for (size_t i = length, j = 0; i < newLength; i++, j++)
+    {
+        elements[i] = other.elements[j];
+    }
+    length = newLength;
 }
