@@ -23,6 +23,8 @@ class Array{
         void insert(size_t index,const Type& newItem);
         // search the array for a given value, and return its index if found and -1 if not found
         int search(const Type& key)const;
+        void erase(size_t index);
+        void clear();
 };
 }
 
@@ -128,4 +130,19 @@ int ds::Array<Type>::search(const Type& key)const{
         if(elements[i] == key) return i;
     }
     return -1;
+}
+
+template <class Type>
+void ds::Array<Type>::erase(size_t index){
+    if (index >= length) throw std::out_of_range ("invalid index");
+    for (size_t i = index; i < length -1; i++)
+    {
+        elements[i] = elements[i + 1];
+    }
+    length--;
+}
+
+template <class Type>
+void ds::Array<Type>::clear(){ 
+    length = 0; 
 }
