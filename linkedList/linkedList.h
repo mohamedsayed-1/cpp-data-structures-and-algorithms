@@ -1,4 +1,6 @@
 #pragma once
+#include <iostream>
+#include <stdexcept>
 
 namespace ds{
     template<class Type>
@@ -22,6 +24,10 @@ namespace ds{
             void insertBefore(const Type& oldItem, const Type& newItem);
             void deleteItem(const Type& item);
             bool replace(const Type& item,const Type& newItem);
+            const Type& getFirst()const;
+            const Type& getLast()const;
+            void display() const;
+            size_t size() const;
    };
 }
 
@@ -150,4 +156,31 @@ bool ds::LinkedList<Type>::replace(const Type& oldItem,const Type& newItem){
         curr = curr->next;
     }
     return false;
+}
+
+template <class Type>
+const Type& ds::LinkedList<Type>::getFirst()const{
+    if (isEmpty()) throw std::runtime_error("list is Empty");
+    return first->data;
+}
+
+template <class Type>
+const Type& ds::LinkedList<Type>::getLast()const{
+    if (isEmpty()) throw std::runtime_error("list is Empty");
+    return last->data;
+}
+
+template <class Type>
+void ds::LinkedList<Type>::display() const{
+    Node* curr = first;
+    while(curr != nullptr){
+        std::cout << curr->data << "  ";
+        curr = curr->next;
+    }
+    std::cout << std::endl;
+}
+
+template <class Type>
+size_t ds::LinkedList<Type>::size() const{
+    return count;
 }
