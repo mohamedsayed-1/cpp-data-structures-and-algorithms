@@ -16,6 +16,8 @@ namespace ds{
             bool isEmpty() const;
             void insertFront(const Type& item);
             void insertBack(const Type& item);
+            void deleteFront();
+            void deleteBack();
    };
 }
 
@@ -56,4 +58,32 @@ void ds::LinkedList<Type>::insertBack(const Type& item){
         last = newNode;
     }
     count++;
+}
+
+template <class Type>
+void ds::LinkedList<Type>::deleteFront(){
+    if (isEmpty()) throw std::runtime_error("Can't delete, the linked list is Empty");
+    if (count == 1) {
+        delete first;
+        first = last = nullptr;
+        count--;
+        return;
+    }
+    Node* curr = first;
+    first = first->next;
+    delete curr;
+    count--;
+}
+
+template <class Type>
+void ds::LinkedList<Type>::deleteBack(){
+    if (isEmpty()) throw std::runtime_error("Can't delete, the linked list is Empty");
+    if (count == 1){deleteFront(); return;}
+    Node* curr = first;
+    while(curr->next != last) curr = curr->next;
+    last = curr;
+    curr = curr->next;
+    delete curr;
+    last->next = nullptr;
+    count--;
 }
