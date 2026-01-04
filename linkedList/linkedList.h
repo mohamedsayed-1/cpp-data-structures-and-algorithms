@@ -28,6 +28,8 @@ namespace ds{
             const Type& getLast()const;
             void display() const;
             size_t size() const;
+            void reverse();
+            void clear();
    };
 }
 
@@ -183,4 +185,25 @@ void ds::LinkedList<Type>::display() const{
 template <class Type>
 size_t ds::LinkedList<Type>::size() const{
     return count;
+}
+
+template <class Type>
+void ds::LinkedList<Type>::reverse(){
+    if(count <= 1) return;
+    Node* prev, * curr, * next;
+    prev = next = nullptr;
+    curr = first;
+    last = first;
+    while(curr != nullptr){
+        next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+    }
+    first = prev;
+}
+
+template <class Type>
+void ds::LinkedList<Type>::clear() {
+    while (!isEmpty()) deleteFront();
 }
