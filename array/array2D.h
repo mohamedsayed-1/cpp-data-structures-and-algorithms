@@ -21,6 +21,7 @@ class Array2D{
         void clear();
         void insert(int col, int row, const Type& newItem);
         void erase(int col, int row);
+        std::pair<int, int> search(const Type& key)const;
 };
 }
 
@@ -150,4 +151,15 @@ void ds::Array2D<Type>::erase(int row, int col){
     if(row < 0 || row >= maxRow || col < 0 || col >= maxCol)
         throw std::out_of_range ("invalid index");
     arr[row][col] = Type();
+}
+
+template <class Type>
+std::pair<int, int> ds::Array2D<Type>::search(const Type& key)const{
+    for (int i = 0; i < maxRow; i++){
+        for (int j = 0; j < maxCol; j++)
+        {
+            if (arr[i][j] == key) return {i, j};
+        }
+    }
+    return {-1, -1};
 }
