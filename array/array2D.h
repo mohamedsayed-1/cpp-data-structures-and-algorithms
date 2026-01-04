@@ -9,6 +9,9 @@ class Array2D{
         Type** arr;
     public:
         Array2D(int rowSize = 100, int colSize = 100);
+        Array2D(const Array2D& other);
+        Array2D& operator=(const Array2D& other);
+        ~Array2D();
 };
 }
 
@@ -26,4 +29,50 @@ ds::Array2D<Type>::Array2D(int rowSize, int colSize){
             arr[i][j] = Type();
         }
     }
+}
+
+template <class Type>
+ds::Array2D<Type>::Array2D(const Array2D& other){
+    Type** newArr = new Type*[other.maxRow];
+    for(size_t i = 0; i < other.maxRow; i++){
+        newArr[i] = new Type[other.maxCol];
+    }
+    for (size_t i = 0; i < other.maxRow; i++){
+        for (size_t j = 0; j < other.maxCol; j++){
+            newArr[i][j] = other.arr[i][j];
+        }
+    }
+    arr = newArr;
+    maxRow = other.maxRow;
+    maxCol = other.maxCol;
+}
+
+template <class Type>
+ds::Array2D<Type>& ds::Array2D<Type>::operator=(const ds::Array2D<Type>& other){
+    if(this == &other) return *this;
+    Type** newArr = new Type*[other.maxRow];
+    for(size_t i = 0; i < other.maxRow; i++){
+        newArr[i] = new Type[other.maxCol];
+    }
+    for (size_t i = 0; i < other.maxRow; i++){
+        for (size_t j = 0; j < other.maxCol; j++){
+            newArr[i][j] = other.arr[i][j];
+        }
+    }
+        for(size_t i = 0; i < maxRow; i++){
+        delete[] arr[i];
+    }
+    delete[] arr;
+    arr = newArr;
+    maxRow = other.maxRow;
+    maxCol = other.maxCol;
+    return *this;
+}
+
+template <class Type>
+ds::Array2D<Type>::~Array2D(){
+    for(size_t i = 0; i < maxRow; i++){
+        delete[] arr[i];
+    }
+    delete[] arr;
 }
