@@ -30,6 +30,9 @@ namespace ds{
             size_t size() const;
             void reverse();
             void clear();
+            LinkedList& operator=(const LinkedList<Type>& other);
+            LinkedList(const LinkedList<Type>& other);
+            ~LinkedList();
    };
 }
 
@@ -206,4 +209,30 @@ void ds::LinkedList<Type>::reverse(){
 template <class Type>
 void ds::LinkedList<Type>::clear() {
     while (!isEmpty()) deleteFront();
+}
+
+template <class Type>
+ds::LinkedList<Type>& ds::LinkedList<Type>::operator=(const ds::LinkedList<Type>& other){
+    if(this == &other) return *this;
+    clear();
+    Node* curr = other.first;
+    while(curr != nullptr){
+        insertBack(curr->data);
+        curr = curr->next;
+    }
+    return *this;
+}
+
+template <class Type>
+ds::LinkedList<Type>::LinkedList(const LinkedList<Type>& other):first(nullptr), last(nullptr), count(0){
+    Node* curr = other.first;
+    while(curr != nullptr){
+        insertBack(curr->data);
+        curr = curr->next;
+    }
+}
+
+template <class Type>
+ds::LinkedList<Type>::~LinkedList(){
+    clear();
 }
