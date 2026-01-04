@@ -17,6 +17,10 @@ class Array2D{
         size_t rows() const;
         size_t cols() const;
         size_t size()const;
+        void fill(const Type& element);
+        void clear();
+        void insert(int col, int row, const Type& newItem);
+        void erase(int col, int row);
 };
 }
 
@@ -114,4 +118,36 @@ size_t ds::Array2D<Type>::cols() const{
 template <class Type>
 size_t ds::Array2D<Type>::size()const{
     return maxCol * maxRow;
+}
+
+template <class Type>
+void ds::Array2D<Type>::fill(const Type& element){
+    for (size_t i = 0; i < maxRow; i++){
+        for (size_t j = 0; j < maxCol; j++){
+            arr[i][j] = element;
+        }
+    }
+}
+
+template <class Type>
+void ds::Array2D<Type>::clear(){ 
+    for (size_t i = 0; i < maxRow; i++){
+        for (size_t j = 0; j < maxCol; j++){
+            arr[i][j] = Type();
+        }
+    }
+}
+
+template <class Type>
+void ds::Array2D<Type>::insert(int row, int col, const Type& newItem){
+    if(row < 0 || row >= maxRow || col < 0 || col >= maxCol)
+        throw std::out_of_range ("invalid index");
+    arr[row][col] = newItem;
+}
+
+template <class Type>
+void ds::Array2D<Type>::erase(int row, int col){
+    if(row < 0 || row >= maxRow || col < 0 || col >= maxCol)
+        throw std::out_of_range ("invalid index");
+    arr[row][col] = Type();
 }
