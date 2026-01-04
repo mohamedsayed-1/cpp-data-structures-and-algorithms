@@ -22,6 +22,8 @@ class Array2D{
         void insert(int col, int row, const Type& newItem);
         void erase(int col, int row);
         std::pair<int, int> search(const Type& key)const;
+        void enlarge(int newRowSize, int newColSize);
+        void merge(const Array2D& other);
 };
 }
 
@@ -162,4 +164,52 @@ std::pair<int, int> ds::Array2D<Type>::search(const Type& key)const{
         }
     }
     return {-1, -1};
+}
+
+template <class Type>
+void ds::Array2D<Type>::enlarge(int newRowSize, int newColSize){
+    if(newRowSize <= maxRow || newColSize <= maxCol) 
+        throw std::runtime_error("new size must be greater than current capacity");    
+    Type** newArr = new Type* [newRowSize];
+    for(size_t i = 0; i < newRowSize; i++){ 
+        newArr[i] = new Type[newColSize];
+    }
+    for (size_t i = 0; i < maxRow; i++){
+        for (size_t j = 0; j < maxCol; j++){
+            newArr[i][j] = arr[i][j];
+        }
+    }
+    for(size_t i = 0; i < maxRow; i++){
+        delete[] arr[i];
+    }
+    delete[] arr;
+    arr = newArr;
+    maxRow = newRowSize;
+    maxCol = newColSize;
+}
+
+template <class Type>
+void ds::Array2D<Type>::merge(const ds::Array2D<Type>& other){
+    Type** newArr = new Type*[maxRow+other.maxRow];
+    size_t cols = maxCol > other.maxCol? maxCol: other.maxCol;
+    for (size_t i = 0; i < maxRow+other.maxRow; i++){
+        newArr[i] = new Type[cols];
+    }
+    for (size_t i = 0; i < maxRow; i++) {
+        for (size_t j = 0; j < cols; j++) {
+            newArr[i][j] = (j < maxCol) ? arr[i][j] : Type();
+        }
+    }
+    for (size_t i = 0; i < other.maxRow; i++) {
+        for (size_t j = 0; j < cols; j++) {
+            newArr[maxRow + i][j] = (j < other.maxCol) ? other.arr[i][j] : Type();
+        }
+    }
+    for(size_t i = 0; i < maxRow; i++){
+        delete[] arr[i];
+    }
+    delete[] arr;
+    arr = newArr;
+    maxCol = cols;
+    maxRow = maxRow+other.maxRow;
 }
