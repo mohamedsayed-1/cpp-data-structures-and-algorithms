@@ -14,6 +14,9 @@ class Array2D{
         ~Array2D();
         Type at(int row, int col) const;
         void display()const;
+        size_t rows() const;
+        size_t cols() const;
+        size_t size()const;
 };
 }
 
@@ -96,4 +99,19 @@ void ds::Array2D<Type>::display()const{
         }
         std::cout << std::endl;
     }
+}
+
+template <class Type>
+size_t ds::Array2D<Type>::rows() const{
+    return maxRow;
+}
+
+template <class Type>
+size_t ds::Array2D<Type>::cols() const{
+    return maxCol;
+}
+
+template <class Type>
+size_t ds::Array2D<Type>::size()const{
+    return maxCol * maxRow;
 }
