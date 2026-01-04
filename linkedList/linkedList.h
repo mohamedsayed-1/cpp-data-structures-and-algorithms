@@ -18,6 +18,10 @@ namespace ds{
             void insertBack(const Type& item);
             void deleteFront();
             void deleteBack();
+            bool search(const Type& item) const;
+            void insertBefore(const Type& oldItem, const Type& newItem);
+            void deleteItem(const Type& item);
+            bool replace(const Type& item,const Type& newItem);
    };
 }
 
@@ -86,4 +90,64 @@ void ds::LinkedList<Type>::deleteBack(){
     delete curr;
     last->next = nullptr;
     count--;
+}
+
+template <class Type>
+bool ds::LinkedList<Type>::search(const Type& item) const{
+    Node* curr = first;
+    while(curr != nullptr){
+        if(curr->data == item) return true;
+        curr = curr->next;
+    }
+    return false;
+}
+
+template <class Type>
+void ds::LinkedList<Type>::insertBefore(const Type& item, const Type& newItem){
+    if (isEmpty()) throw std::runtime_error("list is Empty");
+    if(first->data == item){insertFront(newItem); return;}
+    Node* curr = first;
+    while(curr != nullptr && curr->next != nullptr){
+        if(curr->next->data == item){
+            Node* newNode = new Node{newItem, curr->next};
+            curr->next = newNode;
+            count++;
+            return;
+        } 
+        curr = curr->next;
+    }
+    throw std::runtime_error("item is not found");
+}
+
+template <class Type>
+void ds::LinkedList<Type>::deleteItem(const Type& item){
+    if (isEmpty()) throw std::runtime_error("list is Empty");
+    if(first->data == item){deleteFront(); return;}
+    if(last->data == item){deleteBack(); return;}
+    Node* curr = first->next;
+    Node* prev = first;
+    while(curr != nullptr){
+        if(curr->data == item){
+            prev->next = curr->next;
+            delete curr;
+            count--;
+            return;
+        } 
+        curr = curr->next;
+        prev = prev->next;
+    }
+    throw std::runtime_error("item is not found");
+}
+
+template <class Type>
+bool ds::LinkedList<Type>::replace(const Type& oldItem,const Type& newItem){
+    Node* curr = first;
+    while(curr != nullptr){
+        if(curr->data == oldItem){
+            curr->data = newItem;
+            return true;
+        }
+        curr = curr->next;
+    }
+    return false;
 }
