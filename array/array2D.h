@@ -12,6 +12,8 @@ class Array2D{
         Array2D(const Array2D& other);
         Array2D& operator=(const Array2D& other);
         ~Array2D();
+        Type at(int row, int col) const;
+        void display()const;
 };
 }
 
@@ -75,4 +77,23 @@ ds::Array2D<Type>::~Array2D(){
         delete[] arr[i];
     }
     delete[] arr;
+}
+
+template <class Type>
+Type ds::Array2D<Type>::at(int row, int col) const{
+    if(row < 0 || row >= maxRow || col < 0 || col >= maxCol)
+        throw std::out_of_range("invalid index");
+    return arr[row][col];
+}
+
+template <class Type>
+void ds::Array2D<Type>::display()const{
+    for (size_t i = 0; i < maxRow; i++)
+    {
+        for (size_t j = 0; j < maxCol; j++)
+        {
+            std::cout << arr[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
 }
