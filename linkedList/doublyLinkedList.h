@@ -12,6 +12,7 @@ namespace ds{
             Node* first;
             Node* last;
             size_t count;
+            Node* findNode(const Type& item) const;
         public:
             DoublyLinkedList();
             bool isEmpty() const;
@@ -103,60 +104,58 @@ void ds::DoublyLinkedList<Type>::deleteBack(){
 
 template <class Type>
 bool ds::DoublyLinkedList<Type>::search(const Type& item) const{
-    Node* curr = first;
-    while(curr != nullptr){
-        if(curr->data == item) return true;
-        curr = curr->next;
-    }
-    return false;
+    return findNode(item) != nullptr; 
 }
 
 template <class Type>
 void ds::DoublyLinkedList<Type>::insertBefore(const Type& item, const Type& newItem){
-    if (isEmpty()) throw std::runtime_error("list is Empty");
-    if(first->data == item){insertFront(newItem); return;}
-    Node* curr = first;
-    while(curr->next != nullptr){
-        if(curr->next->data == item){
-            Node* newNode = new Node{newItem, curr->next, curr};
-            curr->next->prev = newNode; 
-            curr->next = newNode;
-            count++;
-            return;
-        } 
-        curr = curr->next;
+    Node* curr = findNode(item);
+    if(curr == first){
+        insertFront(newItem);
     }
-    throw std::runtime_error("item is not found");
+    else if(curr){
+        Node* newNode = new Node{newItem, curr, curr->prev};
+        curr->prev->next = newNode;
+        curr->prev = newNode; 
+        count++;
+    }
+    else
+        throw std::runtime_error("item is not found");
 }
 
 template <class Type>
 void ds::DoublyLinkedList<Type>::deleteItem(const Type& item){
-    if (isEmpty()) throw std::runtime_error("list is Empty");
-    if(first->data == item){deleteFront(); return;}
-    if(last->data == item){deleteBack(); return;}
-    Node* curr = first->next;
-    while(curr != nullptr){
-        if(curr->data == item){
-            curr->next->prev = curr->prev;
-            curr->prev->next = curr->next;
-            delete curr;
-            count--;
-            return;
-        } 
-        curr = curr->next;
+    if(first->data == item) deleteFront();
+    else if(last->data == item) deleteBack();
+    else {
+        Node* deletedItem = findNode(item);
+        if(deletedItem){
+                deletedItem->next->prev = deletedItem->prev;
+                deletedItem->prev->next = deletedItem->next;
+                delete deletedItem;
+                count--;
+        }
+        else
+            throw std::runtime_error("item is not found");
     }
-    throw std::runtime_error("item is not found");
 }
 
 template <class Type>
 bool ds::DoublyLinkedList<Type>::replace(const Type& item, const Type& newItem){
-    Node* curr = first;
-    while(curr != nullptr){
-        if(curr->data == item) {
-            curr->data = newItem;
-            return true;
-        }
-        curr = curr->next;
+    Node* replacedNode = findNode(item);
+    if(replacedNode){
+        replacedNode->data = newItem;
+        return true;
     }
     return false;
+}
+
+template <class Type>
+typename ds::DoublyLinkedList<Type>::Node* ds::DoublyLinkedList<Type>::findNode(const Type& item) const{
+    Node* curr = first;
+    while(curr != nullptr){
+        if(curr->data == item) return curr;
+        curr = curr->next;
+    }
+    return nullptr;
 }
