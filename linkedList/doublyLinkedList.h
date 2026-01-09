@@ -1,3 +1,4 @@
+#include <iostream>
 #include <stdexcept>
 
 namespace ds{
@@ -24,6 +25,12 @@ namespace ds{
             void insertBefore(const Type& item, const Type& newItem);
             void deleteItem(const Type& item);
             bool replace(const Type& item, const Type& newItem);
+            void display() const;
+            size_t size() const;
+            void clear();
+            DoublyLinkedList& operator=(const DoublyLinkedList<Type>& other);
+            DoublyLinkedList(const DoublyLinkedList<Type>& other);
+            ~DoublyLinkedList();
     };
 }
 
@@ -158,4 +165,50 @@ typename ds::DoublyLinkedList<Type>::Node* ds::DoublyLinkedList<Type>::findNode(
         curr = curr->next;
     }
     return nullptr;
+}
+
+template <class Type>
+void ds::DoublyLinkedList<Type>::display() const{
+    Node* curr = first;
+    while(curr != nullptr){
+        std::cout << curr->data << "  ";
+        curr = curr->next;
+    }
+    std::cout << std::endl;
+}
+
+template <class Type>
+size_t ds::DoublyLinkedList<Type>::size() const{
+    return count;
+}
+
+template <class Type>
+void ds::DoublyLinkedList<Type>::clear() {
+    while (!isEmpty()) deleteFront();
+}
+
+template <class Type>
+ds::DoublyLinkedList<Type>& ds::DoublyLinkedList<Type>::operator=(const ds::DoublyLinkedList<Type>& other){
+    if(this == &other) return *this;
+    clear();
+    Node* curr = other.first;
+    while(curr != nullptr){
+        insertBack(curr->data);
+        curr = curr->next;
+    }
+    return *this;
+}
+
+template <class Type>
+ds::DoublyLinkedList<Type>::DoublyLinkedList(const DoublyLinkedList<Type>& other):first(nullptr), last(nullptr), count(0){
+    Node* curr = other.first;
+    while(curr != nullptr){
+        insertBack(curr->data);
+        curr = curr->next;
+    }
+}
+
+template <class Type>
+ds::DoublyLinkedList<Type>::~DoublyLinkedList(){
+    clear();
 }
