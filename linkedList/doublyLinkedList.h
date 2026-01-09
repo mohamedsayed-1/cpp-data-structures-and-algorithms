@@ -19,6 +19,10 @@ namespace ds{
             void insertBack(const Type& item);
             void deleteFront();
             void deleteBack();
+            bool search(const Type& item) const;
+            void insertBefore(const Type& item, const Type& newItem);
+            void deleteItem(const Type& item);
+            bool replace(const Type& item, const Type& newItem);
     };
 }
 
@@ -95,4 +99,64 @@ void ds::DoublyLinkedList<Type>::deleteBack(){
         delete curr;
         count--;
     }
+}
+
+template <class Type>
+bool ds::DoublyLinkedList<Type>::search(const Type& item) const{
+    Node* curr = first;
+    while(curr != nullptr){
+        if(curr->data == item) return true;
+        curr = curr->next;
+    }
+    return false;
+}
+
+template <class Type>
+void ds::DoublyLinkedList<Type>::insertBefore(const Type& item, const Type& newItem){
+    if (isEmpty()) throw std::runtime_error("list is Empty");
+    if(first->data == item){insertFront(newItem); return;}
+    Node* curr = first;
+    while(curr->next != nullptr){
+        if(curr->next->data == item){
+            Node* newNode = new Node{newItem, curr->next, curr};
+            curr->next->prev = newNode; 
+            curr->next = newNode;
+            count++;
+            return;
+        } 
+        curr = curr->next;
+    }
+    throw std::runtime_error("item is not found");
+}
+
+template <class Type>
+void ds::DoublyLinkedList<Type>::deleteItem(const Type& item){
+    if (isEmpty()) throw std::runtime_error("list is Empty");
+    if(first->data == item){deleteFront(); return;}
+    if(last->data == item){deleteBack(); return;}
+    Node* curr = first->next;
+    while(curr != nullptr){
+        if(curr->data == item){
+            curr->next->prev = curr->prev;
+            curr->prev->next = curr->next;
+            delete curr;
+            count--;
+            return;
+        } 
+        curr = curr->next;
+    }
+    throw std::runtime_error("item is not found");
+}
+
+template <class Type>
+bool ds::DoublyLinkedList<Type>::replace(const Type& item, const Type& newItem){
+    Node* curr = first;
+    while(curr != nullptr){
+        if(curr->data == item) {
+            curr->data = newItem;
+            return true;
+        }
+        curr = curr->next;
+    }
+    return false;
 }
