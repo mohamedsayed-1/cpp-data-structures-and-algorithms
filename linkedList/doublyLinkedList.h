@@ -1,3 +1,5 @@
+#include <stdexcept>
+
 namespace ds{
     template<class Type>
     class DoublyLinkedList{
@@ -15,6 +17,8 @@ namespace ds{
             bool isEmpty() const;
             void insertFront(const Type& item);
             void insertBack(const Type& item);
+            void deleteFront();
+            void deleteBack();
     };
 }
 
@@ -51,5 +55,38 @@ void ds::DoublyLinkedList<Type>::insertBack(const Type& item){
         last->next = newNode;
         last = newNode;
         count++;
+    }
+}
+
+template <class Type>
+void ds::DoublyLinkedList<Type>::deleteFront(){
+    if (isEmpty()){
+        throw std::runtime_error("Can't delete, the linked list is Empty");
+    }    
+    else if (count == 1) {
+        delete first;
+        first = last = nullptr;
+        count = 0;
+        return;
+    }
+    else{
+        Node* curr = first;
+        first = first->next;
+        first->prev = nullptr;
+        delete curr;
+        count--;
+    }
+}
+
+template <class Type>
+void ds::DoublyLinkedList<Type>::deleteBack(){
+    if (isEmpty()) throw std::runtime_error("Can't delete, the linked list is Empty");
+    else if (count == 1) deleteFront();
+    else{    
+        Node* curr = last;
+        last = last->prev;
+        last->next = nullptr;
+        delete curr;
+        count--;
     }
 }
