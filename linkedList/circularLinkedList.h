@@ -16,6 +16,10 @@ namespace ds{
             void insertBack(const Type& item);
             void deleteFront();
             void deleteBack();
+            void insertBefore(const Type& item, const Type& newItem);
+            void deleteItem(const Type& item);
+            bool search(const Type& item) const;
+            void replace(const Type& item, const Type& newItem);
         };
     }
 
@@ -84,4 +88,69 @@ void ds::CircularLinkedList<Type>::deleteBack(){
     delete tmp;
     last->next = first;
     count--;
+}
+
+template <class Type>
+void ds::CircularLinkedList<Type>::insertBefore(const Type& item, const Type& newItem){
+    if (isEmpty()) throw std::runtime_error("list is Empty");
+    if(first->data == item){insertFront(newItem); return;}
+    Node* curr = first->next;
+    do{
+        if(curr->next->data == item){
+            Node* newNode = new Node{newItem, curr->next};
+            curr->next = newNode;
+            count++;
+            return;
+        }
+        curr = curr->next; 
+    }while(curr != first);
+    throw std::runtime_error("item is not found");
+}
+
+template <class Type>
+void ds::CircularLinkedList<Type>::deleteItem(const Type& item){
+    if (isEmpty()) throw std::runtime_error("list is Empty");
+    if(first->data == item){deleteFront(); return;}
+    if(last->data == item){deleteBack(); return;}
+    Node* curr = first->next;
+    Node* prev = first;
+    while(curr != first){
+        if(curr->data == item){
+            prev->next = curr->next;
+            delete curr;
+            count--;
+            return;
+        } 
+        curr = curr->next;
+        prev = prev->next;
+    }
+    throw std::runtime_error("item is not found");
+}
+
+template <class Type>
+bool ds::CircularLinkedList<Type>::search(const Type& item) const{
+    if (isEmpty()) return false;
+    Node* curr = first;
+    do{
+        if(curr->data == item) return true;
+        curr = curr->next;
+    }while(curr != first);
+
+    return false;
+}
+
+template <class Type>
+void ds::CircularLinkedList<Type>::replace(const Type& item, const Type& newItem){
+    if (isEmpty()) throw std::runtime_error("list is Empty");
+    if(first->data == item){first->data = newItem; return;}
+    if(last->data == item){last->data = newItem; return;}
+    Node* curr = first->next;
+    do{
+        if(curr->data == item) {
+            curr->data = newItem;
+            return;
+        }
+        curr = curr->next;
+    }while(curr != first);
+    throw std::runtime_error("item is not found");
 }
