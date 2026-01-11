@@ -1,3 +1,7 @@
+#include <iostream>
+#include <stdexcept>
+
+
 namespace ds{
     template<class Type>
     class CircularLinkedList{
@@ -20,6 +24,12 @@ namespace ds{
             void deleteItem(const Type& item);
             bool search(const Type& item) const;
             void replace(const Type& item, const Type& newItem);
+            void display() const;
+            size_t size() const;
+            void clear();
+            CircularLinkedList& operator=(const CircularLinkedList<Type>& other);
+            CircularLinkedList(const CircularLinkedList<Type>& other);
+            ~CircularLinkedList();
         };
     }
 
@@ -134,7 +144,7 @@ bool ds::CircularLinkedList<Type>::search(const Type& item) const{
     do{
         if(curr->data == item) return true;
         curr = curr->next;
-    }while(curr != first);
+    } while(curr != first);
 
     return false;
 }
@@ -151,6 +161,56 @@ void ds::CircularLinkedList<Type>::replace(const Type& item, const Type& newItem
             return;
         }
         curr = curr->next;
-    }while(curr != first);
+    } while(curr != first);
     throw std::runtime_error("item is not found");
+}
+
+template <class Type>
+void ds::CircularLinkedList<Type>::display() const{
+    if (isEmpty()) return;
+    Node* curr = first;
+    do{
+        std::cout << curr->data << " ";
+        curr = curr->next;
+    } while(curr != first);
+    std::cout << std::endl;
+}
+
+template <class Type>
+size_t ds::CircularLinkedList<Type>::size() const{
+    return count;
+}
+
+template <class Type>
+void ds::CircularLinkedList<Type>::clear() {
+    while (!isEmpty())
+        deleteFront();
+}
+
+template <class Type>
+ds::CircularLinkedList<Type>& ds::CircularLinkedList<Type>::operator=(const ds::CircularLinkedList<Type>& other){
+    if(this == &other) return *this;
+    clear();
+    if(other.isEmpty()) return *this;
+    Node* curr = other.first;
+    do{
+        insertBack(curr->data);
+        curr = curr->next;
+    } while(curr != other.first);
+    return *this;
+}
+
+template <class Type>
+ds::CircularLinkedList<Type>::CircularLinkedList(const CircularLinkedList<Type>& other):first(nullptr), last(nullptr), count(0){
+    if(other.isEmpty()) return;
+    Node* curr = other.first;
+    do{
+        insertBack(curr->data);
+        curr = curr->next;
+    } while(curr != other.first);
+}
+
+template <class Type>
+ds::CircularLinkedList<Type>::~CircularLinkedList(){
+    clear();
 }
