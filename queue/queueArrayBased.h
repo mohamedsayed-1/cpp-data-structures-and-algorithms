@@ -1,3 +1,7 @@
+#pragma once
+#include <stdexcept>
+
+
 namespace ds{
     template <class Type>
     class queue{
@@ -14,6 +18,9 @@ namespace ds{
             bool isFull()const;
             void enqueue(const Type& item);
             Type dequeue();
+            const Type& front() const;
+            const Type& back() const;
+            const Type& peek()const;
         };
 }
 
@@ -84,4 +91,22 @@ Type ds::queue<Type>::dequeue(){
     }
     length--;
     return item;
+}
+
+template <class Type>
+const Type& ds::queue<Type>::front() const{
+    if (isEmpty()) throw std::underflow_error("queue is empty");
+    return items[0];
+}
+
+template <class Type>
+const Type& ds::queue<Type>::back() const{
+    if (isEmpty()) throw std::underflow_error("queue is empty");
+    return items[length - 1];
+}
+
+template <class Type>
+const Type& ds::queue<Type>::peek()const{
+    if(isEmpty()) throw std::underflow_error("queue is empty");
+    return items[0];
 }
