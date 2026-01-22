@@ -10,6 +10,10 @@ namespace ds{
             ~queue();
             queue(const queue<Type>& other);
             queue& operator = (const queue<Type>& other);
+            bool isEmpty()const;
+            bool isFull()const;
+            void enqueue(const Type& item);
+            Type dequeue();
         };
 }
 
@@ -51,4 +55,33 @@ ds::queue<Type>& ds::queue<Type>::operator = (const queue<Type>& other){
     length = other.length;
     items = newArr;
     return *this;
+}
+
+template <class Type>
+bool ds::queue<Type>::isEmpty()const{
+    return length == 0;
+}
+
+template <class Type>
+bool ds::queue<Type>::isFull()const{
+    return length == maxSize;
+}
+
+template <class Type>
+void ds::queue<Type>::enqueue(const Type& item){
+    if(isFull()) throw std::runtime_error("queue is full");
+    items[length] = item;
+    length++;
+}
+
+template <class Type>
+Type ds::queue<Type>::dequeue(){
+    if(isEmpty()) throw std::underflow_error("queue is empty");
+    Type item = items[0];
+    for (size_t i = 0; i < length - 1; i++)
+    {
+        items[i] = items[i + 1];
+    }
+    length--;
+    return item;
 }
