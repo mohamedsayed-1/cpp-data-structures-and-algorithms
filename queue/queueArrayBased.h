@@ -1,5 +1,6 @@
 #pragma once
 #include <stdexcept>
+#include <iostream>
 
 
 namespace ds{
@@ -21,6 +22,10 @@ namespace ds{
             const Type& front() const;
             const Type& back() const;
             const Type& peek()const;
+            void display()const;
+            size_t size()const;
+            bool search(const Type& item)const;
+            void clear();
         };
 }
 
@@ -109,4 +114,31 @@ template <class Type>
 const Type& ds::queue<Type>::peek()const{
     if(isEmpty()) throw std::underflow_error("queue is empty");
     return items[0];
+}
+
+template <class Type>
+void ds::queue<Type>::display()const{
+    for (size_t i = 0; i < length; i++)
+    {
+        std::cout << items[i] << " ";
+    }
+}
+
+template <class Type>
+size_t ds::queue<Type>::size()const{
+    return length;
+}
+
+template <class Type>
+bool ds::queue<Type>::search(const Type& item)const{
+    for (size_t i = 0; i < length; i++)
+    {
+        if(items[i] == item) return true;
+    }
+    return false;
+}
+
+template <class Type>
+void ds::queue<Type>::clear(){
+    length = 0;
 }
