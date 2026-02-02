@@ -13,6 +13,10 @@ namespace ds{
             ~Queue();
             Queue(const Queue& other);
             Queue& operator =(const Queue& other);
+            bool isEmpty() const;
+            bool isFull() const;
+            size_t size()const;
+            size_t capacity()const;
     };
 }
 
@@ -55,4 +59,24 @@ ds::Queue<Type>& ds::Queue<Type>::operator =(const ds::Queue<Type>& other){
     length = other.length;
     items = newQueue;
     return *this;
+}
+
+template<class Type>
+bool ds::Queue<Type>::isEmpty() const{
+    return length == 0;
+}
+
+template<class Type>
+bool ds::Queue<Type>::isFull() const{
+    return length == maxSize;
+}
+
+template<class Type>
+size_t ds::Queue<Type>::size()const{
+    return length;
+}
+
+template<class Type>
+size_t ds::Queue<Type>::capacity()const{
+    return maxSize;
 }
