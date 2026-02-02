@@ -24,6 +24,9 @@ namespace ds{
             void display() const;
             size_t size() const;
             void clear();
+            ~PriorityQueue();
+            PriorityQueue& operator=(const PriorityQueue<Type>& other);
+            PriorityQueue(const PriorityQueue<Type>& other);
     };
 }
 
@@ -105,4 +108,30 @@ void ds::PriorityQueue<Type>::clear() {
     }
     count = 0;
     first = last = nullptr;
+}
+
+template <class Type>
+ds::PriorityQueue<Type>::~PriorityQueue(){
+    clear();
+}
+
+template <class Type>
+ds::PriorityQueue<Type>& ds::PriorityQueue<Type>::operator=(const ds::PriorityQueue<Type>& other){
+    if(this == &other) return *this;
+    clear();
+    Node* curr = other.first;
+    while(curr != nullptr){
+        enqueue(curr->data);
+        curr = curr->next;
+    }
+    return *this;
+}
+
+template <class Type>
+ds::PriorityQueue<Type>::PriorityQueue(const PriorityQueue<Type>& other):first(nullptr), last(nullptr), count(0){
+    Node* curr = other.first;
+    while(curr != nullptr){
+        enqueue(curr->data);
+        curr = curr->next;
+    }
 }
