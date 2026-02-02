@@ -1,4 +1,7 @@
 #pragma once
+#include <cstddef>
+#include <stdexcept>
+
 
 namespace ds{
     template<class Type>
@@ -14,6 +17,8 @@ namespace ds{
         public:
             PriorityQueue();
             void enqueue(const Type& item);
+            void dequeue();
+            const Type& getFront()const;
     };
 }
 
@@ -45,4 +50,22 @@ void ds::PriorityQueue<Type>::enqueue(const Type& item){
         }
     }
     count++;
+}
+
+template <class Type>
+void ds::PriorityQueue<Type>::dequeue(){
+    if (isEmpty()) throw std::runtime_error("list is Empty");
+    Node* curr = first;
+    if (count == 1)
+        first = last = nullptr;
+    else 
+        first = first->next;
+    delete curr;
+    count--;
+} 
+
+template <class Type>
+const Type& ds::PriorityQueue<Type>::getFront()const{
+    if (isEmpty()) throw std::runtime_error("list is Empty");
+    return first->data;
 }
