@@ -1,5 +1,6 @@
 #pragma once
 #include <cstddef>
+#include <iostream>
 #include <stdexcept>
 
 
@@ -20,7 +21,10 @@ namespace ds{
             size_t capacity()const;
             void enqueue(const Type& item);            
             Type dequeue();
-            const Type& front() const;
+            const Type& getFront() const;
+            void display()const;
+            int search(const Type& item)const;
+            void clear();
     };
 }
 
@@ -102,7 +106,30 @@ Type ds::Queue<Type>::dequeue(){
 }
 
 template<class Type>
-const Type& ds::Queue<Type>::front() const{
+const Type& ds::Queue<Type>::getFront() const{
     if(isEmpty()) throw std::runtime_error("Queue is empty");
     return items[front];
+}
+
+template<class Type>
+void ds::Queue<Type>::display()const{
+    for (size_t i = 0; i < length; i++)
+    {
+        std::cout << items[(front + i) % maxSize] << " ";
+    }
+    std::cout <<std::endl;
+}
+
+template<class Type>
+int ds::Queue<Type>::search(const Type& item)const{
+    for (size_t i = 0; i < length; i++)
+    {
+        if(items[(front + i) % maxSize] == item) return i;  
+    }
+    return -1;
+}
+
+template<class Type>
+void ds::Queue<Type>::clear(){
+    length = front = 0;
 }
