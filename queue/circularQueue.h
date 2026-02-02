@@ -1,5 +1,6 @@
 #pragma once
 #include <cstddef>
+#include <stdexcept>
 
 
 namespace ds{
@@ -17,6 +18,9 @@ namespace ds{
             bool isFull() const;
             size_t size()const;
             size_t capacity()const;
+            void enqueue(const Type& item);            
+            Type dequeue();
+            const Type& front() const;
     };
 }
 
@@ -79,4 +83,26 @@ size_t ds::Queue<Type>::size()const{
 template<class Type>
 size_t ds::Queue<Type>::capacity()const{
     return maxSize;
+}
+
+template<class Type>
+void ds::Queue<Type>::enqueue(const Type& newItem){
+    if(isFull()) throw std::overflow_error("Queue is full");
+    items[(front+length) % maxSize] = newItem;
+    length++;
+}            
+
+template<class Type>
+Type ds::Queue<Type>::dequeue(){
+    if(isEmpty()) throw std::underflow_error("Can't dequeue: Queue is empty");
+    Type item = items[front]; 
+    front = (front + 1) % maxSize;
+    length--;
+    return item;
+}
+
+template<class Type>
+const Type& ds::Queue<Type>::front() const{
+    if(isEmpty()) throw std::runtime_error("Queue is empty");
+    return items[front];
 }
