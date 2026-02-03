@@ -20,6 +20,10 @@ namespace ds{
             const Type& peek()const;
             bool isEmpty()const;
             bool isFull()const;
+            void display()const;
+            size_t size()const;
+            size_t capacity()const;
+            void clear();
     };
 }
 
@@ -86,4 +90,26 @@ bool ds::Stack<Type>::isEmpty()const{
 template <class Type>
 bool ds::Stack<Type>::isFull()const{
     return length == maxSize;
+}
+
+template <class Type>
+void ds::Stack<Type>::display()const{
+    for (size_t i = length; i > 0; i--){
+        std::cout << items[i - 1] << std::endl;
+    }
+}
+
+template <class Type>
+size_t ds::Stack<Type>::size()const{
+    return length;
+}
+
+template <class Type>
+void ds::Stack<Type>::clear(){
+    length = 0;
+}
+
+template <class Type>
+size_t ds::Stack<Type>::capacity() const{ 
+    return maxSize; 
 }
