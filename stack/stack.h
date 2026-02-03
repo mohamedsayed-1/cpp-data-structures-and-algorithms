@@ -1,5 +1,6 @@
 #pragma once
 #include <cstddef>
+#include <stdexcept>
 
 
 namespace ds{
@@ -14,6 +15,11 @@ namespace ds{
             ~Stack();
             Stack(const Stack<Type>& other);
             Stack& operator = (const Stack<Type>& other);
+            void push(const Type& item);
+            Type pop();
+            const Type& peek()const;
+            bool isEmpty()const;
+            bool isFull()const;
     };
 }
 
@@ -52,4 +58,32 @@ ds::Stack<Type>& ds::Stack<Type>::operator = (const Stack<Type>& other){
     length = other.length;
     items = newArr;
     return *this;
+}
+
+template <class Type>
+void ds::Stack<Type>::push(const Type& item){
+    if(isFull()) throw std::runtime_error("Stack is full");
+    items[length++] = item;
+}
+
+template <class Type>
+Type ds::Stack<Type>::pop(){
+    if(isEmpty()) throw std::underflow_error("Stack is empty");
+    return items[--length];
+}
+
+template <class Type>
+const Type& ds::Stack<Type>::peek()const{
+    if(isEmpty()) throw std::underflow_error("Stack is empty");
+    return items[length - 1];
+}
+
+template <class Type>
+bool ds::Stack<Type>::isEmpty()const{
+    return length == 0;
+}
+
+template <class Type>
+bool ds::Stack<Type>::isFull()const{
+    return length == maxSize;
 }
