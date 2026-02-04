@@ -1,4 +1,5 @@
 #pragma once
+#include <cstddef>
 
 
 namespace ds{
@@ -12,6 +13,10 @@ namespace ds{
             ~Deque();
             Deque(const Deque& other);
             Deque& operator =(const Deque& other);
+            bool isEmpty() const;
+            bool isFull() const;
+            size_t size()const;
+            size_t capacity()const;
     };
 }
 
@@ -53,4 +58,24 @@ ds::Deque<Type>& ds::Deque<Type>::operator=(const ds::Deque<Type>& other){
     length = other.length;
     items = newDeque;
     return *this;
+}
+
+template<class Type>
+bool ds::Deque<Type>::isEmpty() const{
+    return length == 0;
+}
+
+template<class Type>
+bool ds::Deque<Type>::isFull() const{
+    return length == maxSize;
+}
+
+template<class Type>
+size_t ds::Deque<Type>::size()const{
+    return length;
+}
+
+template<class Type>
+size_t ds::Deque<Type>::capacity()const{
+    return maxSize;
 }
