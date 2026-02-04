@@ -19,6 +19,10 @@ namespace ds{
             size_t capacity()const;
             const Type& getFront() const;
             const Type& getBack() const;
+            void insertFront(const Type& item);            
+            void insertBack(const Type& item);            
+            Type deleteFront();
+            Type deleteBack();
     };
 }
 
@@ -92,4 +96,36 @@ template<class Type>
 const Type& ds::Deque<Type>::getBack() const{
     if(isEmpty()) throw std::runtime_error("Deque is empty");
     return items[(front+length-1) % maxSize];
+}
+
+template<class Type>
+void ds::Deque<Type>::insertFront(const Type& newItem){
+    if(isFull()) throw std::runtime_error("Deque is full");
+    front = front == 0 ? maxSize - 1 : front - 1;
+    items[front] = newItem;
+    length++;
+}
+
+template<class Type>
+void ds::Deque<Type>::insertBack(const Type& newItem){
+    if(isFull()) throw std::runtime_error("Deque is full");
+    items[(front+length) % maxSize] = newItem;
+    length++;
+}
+
+template<class Type>
+Type ds::Deque<Type>::deleteFront(){
+    if(isEmpty()) throw std::runtime_error("Can't delete: Deque is empty");
+    Type item = items[front]; 
+    front = (front + 1) % maxSize;
+    length--;
+    return item;
+}
+
+template<class Type>
+Type ds::Deque<Type>::deleteBack(){
+    if(isEmpty()) throw std::runtime_error("Can't delete: Deque is empty");
+    Type item = items[(front + length - 1) % maxSize]; 
+    length--;
+    return item;
 }
