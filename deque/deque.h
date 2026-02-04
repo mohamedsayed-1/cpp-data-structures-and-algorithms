@@ -17,6 +17,8 @@ namespace ds{
             bool isFull() const;
             size_t size()const;
             size_t capacity()const;
+            const Type& getFront() const;
+            const Type& getBack() const;
     };
 }
 
@@ -78,4 +80,16 @@ size_t ds::Deque<Type>::size()const{
 template<class Type>
 size_t ds::Deque<Type>::capacity()const{
     return maxSize;
+}
+
+template<class Type>
+const Type& ds::Deque<Type>::getFront() const{
+    if(isEmpty()) throw std::runtime_error("Deque is empty");
+    return items[front];
+}
+
+template<class Type>
+const Type& ds::Deque<Type>::getBack() const{
+    if(isEmpty()) throw std::runtime_error("Deque is empty");
+    return items[(front+length-1) % maxSize];
 }
