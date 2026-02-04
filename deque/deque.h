@@ -1,5 +1,7 @@
 #pragma once
 #include <cstddef>
+#include <iostream>
+#include <stdexcept>
 
 
 namespace ds{
@@ -23,6 +25,9 @@ namespace ds{
             void insertBack(const Type& item);            
             Type deleteFront();
             Type deleteBack();
+            void display()const;
+            int search(const Type& item)const;
+            void clear();
     };
 }
 
@@ -128,4 +133,27 @@ Type ds::Deque<Type>::deleteBack(){
     Type item = items[(front + length - 1) % maxSize]; 
     length--;
     return item;
+}
+
+template<class Type>
+void ds::Deque<Type>::display()const{
+    for (size_t i = 0; i < length; i++)
+    {
+        std::cout << items[(front + i) % maxSize] << " ";
+    }
+    std::cout <<std::endl;
+}
+
+template<class Type>
+int ds::Deque<Type>::search(const Type& item)const{
+    for (size_t i = 0; i < length; i++)
+    {
+        if(items[(front + i) % maxSize] == item) return i;  
+    }
+    return -1;
+}
+
+template<class Type>
+void ds::Deque<Type>::clear(){
+    length = 0;
 }
