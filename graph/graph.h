@@ -15,5 +15,9 @@ namespace ds{
         public:
             Graph(int v, bool d = false);
             void addEdge(int from, int to, int weight = 1);
+            const std::vector<std::vector<Edge>>& getAdj() const;
+            size_t verticesCount() const;
+            bool isDirected() const;
+            void printGraph()const;
     };
 }
