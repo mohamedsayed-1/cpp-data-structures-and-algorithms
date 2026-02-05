@@ -8,3 +8,10 @@ ds::Graph::Graph(int v, bool d): directed(d){
     vertices = v;
     adj.resize(vertices);
 }
+
+void ds::Graph::addEdge(int from, int to, int weight){
+    if (from < 0 || from >= vertices || to < 0 || to >= vertices) 
+        throw std::runtime_error("vertex is not found");
+    adj[from].push_back({to, weight});
+    if(!directed) adj[to].push_back({from, weight});
+}

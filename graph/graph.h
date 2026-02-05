@@ -14,5 +14,6 @@ namespace ds{
             std::vector<std::vector<Edge>> adj;
         public:
             Graph(int v, bool d = false);
+            void addEdge(int from, int to, int weight = 1);
     };
 }
