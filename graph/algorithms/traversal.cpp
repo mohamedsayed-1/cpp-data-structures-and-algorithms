@@ -1,4 +1,5 @@
 #include "traversal.h"
+#include <algorithm>
 #include <stdexcept>
 #include <queue>
 
@@ -152,5 +153,30 @@ namespace ds{
             }  
         }
         return cyclic;
+    }
+    
+    static void topologicalSortHelper(size_t start, std::vector<bool>& visited, const std::vector<std::vector<ds::Edge>>& adj, std::vector<size_t>& DFSResult){
+        if(visited[start]) return;
+        visited[start] = true;
+            for(const auto& i : adj[start]){
+                if (!visited[i.to]) 
+                    topologicalSortHelper(i.to, visited, adj, DFSResult);
+        }
+        DFSResult.push_back(start);            
+    }
+
+    std::vector<size_t> topologicalSort(const ds::Graph& g){
+        size_t vertices = g.verticesCount();
+        const std::vector<std::vector<ds::Edge>>& adj = g.getAdj();
+        if(!g.isDirected() || isCyclic(g))
+            throw std::logic_error("topologicalSort only works on Directed Acyclic Graphs (DAGs)");
+        std::vector<bool> visited(vertices, false);
+        std::vector<size_t> DFSResult;
+        for(size_t i = 0; i < vertices; i++){
+            if(!visited[i]) 
+                topologicalSortHelper(i, visited, adj, DFSResult);
+        }
+        std::reverse(DFSResult.begin(), DFSResult.end()); 
+        return DFSResult;
     }
 }

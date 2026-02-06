@@ -18,4 +18,5 @@ namespace ds{
     size_t countConnectedComponents(const ds::Graph& g);
     TraversalTimestamps DFSWithTimestamps(const ds::Graph& g);
     bool isCyclic(const ds::Graph& g);
+    std::vector<size_t> topologicalSort(const ds::Graph& g);
 }
