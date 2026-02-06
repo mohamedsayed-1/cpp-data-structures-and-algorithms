@@ -8,8 +8,13 @@ namespace ds{
         std::vector<int> parent; 
         std::vector<int> result; 
     };
+    struct TraversalTimestamps{ 
+        std::vector<int> discovery;
+        std::vector<int> finish; 
+    };
 
     BFSTraversalResult BFS(const ds::Graph& g, size_t start);
     std::vector<size_t> DFS(const ds::Graph& g, size_t start);
     size_t countConnectedComponents(const ds::Graph& g);
+    TraversalTimestamps DFSWithTimestamps(const ds::Graph& g);
 }

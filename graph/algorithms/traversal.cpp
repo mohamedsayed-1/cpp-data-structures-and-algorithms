@@ -70,4 +70,34 @@ namespace ds{
         }
         return count;
     }
+    
+    static void timerHelper(size_t start, size_t& timer,std::vector<int>& discovery, 
+                            std::vector<int>& finish,std::vector<bool>& visited, 
+                            const std::vector<std::vector<ds::Edge>>& adj,
+                            std::vector<size_t>& DFSResult){
+        DFSResult.push_back(start);
+        visited[start] = true;
+        discovery[start] = ++timer;
+        for(const auto& i : adj[start]){
+            if (!visited[i.to]) timerHelper(i.to, timer, discovery, finish, visited, adj, DFSResult);
+        }
+        finish[start] = ++timer;
+    }
+
+    TraversalTimestamps DFSWithTimestamps(const ds::Graph& g){
+        size_t vertices = g.verticesCount();
+        const std::vector<std::vector<ds::Edge>>& adj = g.getAdj();
+        std::vector<bool> visited(vertices, false);
+        std::vector<int> discovery(vertices, -1), finish(vertices, -1);
+        size_t timer = 0;
+        std::vector<size_t> DFSResult;
+        for(size_t i = 0; i < (size_t)vertices; i++){
+            if(!visited[i])
+                timerHelper(i, timer, discovery, finish, visited, adj, DFSResult);
+        }
+        TraversalTimestamps result;
+        result.discovery = discovery;
+        result.finish = finish;
+        return result; 
+    }
 }
