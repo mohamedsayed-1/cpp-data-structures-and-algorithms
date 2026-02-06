@@ -36,3 +36,12 @@ void ds::Graph::printGraph()const{
         std::cout << "\n";
     }
 }
+
+bool ds::Graph::hasNegativeWeights()const{
+    for(const auto& edges : adj){
+        for(const auto& e : edges){
+            if(e.weight < 0) return true;
+        }
+    }
+    return false;
+}

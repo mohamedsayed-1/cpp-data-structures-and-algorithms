@@ -20,5 +20,6 @@ namespace ds{
             size_t verticesCount() const;
             bool isDirected() const;
             void printGraph()const;
+            bool hasNegativeWeights()const;
     };
 }
