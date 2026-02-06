@@ -53,4 +53,21 @@ namespace ds{
         DFSHelper(start, visited, adj, DFSResult);
         return DFSResult;
     }
+    
+    size_t countConnectedComponents(const ds::Graph& g){
+        if(g.isDirected()) 
+            throw std::logic_error("connected components defined for undirected graph only");
+        size_t vertices = g.verticesCount();
+        std::vector<bool> visited(vertices, false);
+        std::vector<size_t> DFSResult;
+        const std::vector<std::vector<ds::Edge>>& adj = g.getAdj();
+        size_t count = 0;
+        for(size_t i = 0; i < vertices; i++){
+            if(!visited[i]){ 
+                DFSHelper(i, visited, adj, DFSResult);
+                count++;
+            }
+        }
+        return count;
+    }
 }
