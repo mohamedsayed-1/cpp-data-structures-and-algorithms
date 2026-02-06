@@ -5,7 +5,8 @@
 
 namespace ds{
     struct Edge{
-        int to, weight;
+        size_t to;
+        int weight;
     };
     class Graph{
         private:
@@ -14,7 +15,7 @@ namespace ds{
             std::vector<std::vector<Edge>> adj;
         public:
             Graph(int v, bool d = false);
-            void addEdge(int from, int to, int weight = 1);
+            void addEdge(size_t from, size_t to, int weight = 1);
             const std::vector<std::vector<Edge>>& getAdj() const;
             size_t verticesCount() const;
             bool isDirected() const;

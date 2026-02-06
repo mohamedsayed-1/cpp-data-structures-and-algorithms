@@ -4,21 +4,14 @@
 
 
 ds::Graph::Graph(int v, bool d): directed(d){
-    if (v <= 0) throw std::runtime_error("number of vertices must be greater than zero");
+    if (v <= 0) throw std::invalid_argument("number of vertices must be greater than zero");
     vertices = v;
     adj.resize(vertices);
 }
 
-void ds::Graph::addEdge(int from, int to, int weight){
-    if (from < 0 || from >= vertices || to < 0 || to >= vertices) 
-        throw std::runtime_error("vertex is not found");
-    adj[from].push_back({to, weight});
-    if(!directed) adj[to].push_back({from, weight});
-}
-
-void ds::Graph::addEdge(int from, int to, int weight){
-    if (from < 0 || from >= vertices || to < 0 || to >= vertices) 
-        throw std::runtime_error("vertex is not found");
+void ds::Graph::addEdge(size_t from, size_t to, int weight){
+    if (from >= vertices || to >= vertices) 
+        throw std::out_of_range("vertex is not found");
     adj[from].push_back({to, weight});
     if(!directed) adj[to].push_back({from, weight});
 }
@@ -40,6 +33,6 @@ void ds::Graph::printGraph()const{
         std::cout << i << ": ";
         for(const auto& j : adj[i])
             std::cout << j.to << " (" << j.weight << ") ";
-        std::cout << std::endl;
+        std::cout << "\n";
     }
 }
