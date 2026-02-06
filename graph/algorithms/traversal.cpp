@@ -32,4 +32,25 @@ namespace ds{
         r.result = result;
         return r;
     }
+
+    static void DFSHelper(size_t start, std::vector<bool>& visited, 
+                            const std::vector<std::vector<ds::Edge>>& adj,
+                            std::vector<size_t>& DFSResult){
+        if(visited[start]) return;
+        DFSResult.push_back(start);
+        visited[start] = true;
+            for(const auto& i : adj[start]){
+            if (!visited[i.to]) DFSHelper(i.to, visited, adj, DFSResult);
+        }
+    }
+
+    std::vector<size_t> DFS(const ds::Graph& g, size_t start){
+        size_t vertices = g.verticesCount();
+        if(start >= vertices) throw std::out_of_range("start vertex out of range");
+        std::vector<bool> visited(vertices, false);
+        std::vector<size_t> DFSResult;
+        const std::vector<std::vector<ds::Edge>>& adj = g.getAdj();
+        DFSHelper(start, visited, adj, DFSResult);
+        return DFSResult;
+    }
 }

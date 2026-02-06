@@ -10,4 +10,5 @@ namespace ds{
     };
 
     BFSTraversalResult BFS(const ds::Graph& g, size_t start);
+    std::vector<size_t> DFS(const ds::Graph& g, size_t start);
 }
