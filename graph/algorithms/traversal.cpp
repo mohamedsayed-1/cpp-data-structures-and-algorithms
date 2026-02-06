@@ -100,4 +100,57 @@ namespace ds{
         result.finish = finish;
         return result; 
     }
+    
+    static void directedCycleDetectionHelper(size_t start, size_t& timer, bool& cyclic,  
+                                            const std::vector<std::vector<ds::Edge>>& adj,
+                                            std::vector<int>& finish, std::vector<bool>& visited){
+        if(cyclic) return;
+        visited[start] = true;
+        for(const auto& i : adj[start]){
+            if (visited[i.to] && finish[i.to] == -1){
+                cyclic = true; 
+                return;
+            }
+            if (!visited[i.to]) directedCycleDetectionHelper(i.to, timer, cyclic, adj, finish, visited);
+        }
+        finish[start] = ++timer;
+    }
+    
+    static void unDirectedCycleDetectionHelper(size_t start, size_t& timer, bool& cyclic,std::vector<int>& parent,
+                                                const std::vector<std::vector<ds::Edge>>& adj,
+                                                std::vector<int>& finish, std::vector<bool>& visited){
+        if(cyclic) return;
+        visited[start] = true;
+        for(const auto& i : adj[start]){
+            if(!visited[i.to]){ 
+                parent[i.to] = start;
+                unDirectedCycleDetectionHelper(i.to, timer, cyclic, parent, adj, finish, visited);
+            }
+            else if (visited[i.to] && i.to != parent[start]){
+                cyclic = true; 
+                return;
+            }
+        }
+    }
+
+    bool isCyclic(const ds::Graph& g){
+        size_t vertices = g.verticesCount();
+        const std::vector<std::vector<ds::Edge>>& adj = g.getAdj();
+        std::vector<int> finish(vertices, -1), parent(vertices, -1); 
+        std::vector<bool> visited(vertices, false); 
+        size_t timer = 0;
+        bool cyclic = false;
+        if(g.isDirected()){
+        for(size_t i = 0; i < vertices; i++){
+            if(!visited[i])
+                directedCycleDetectionHelper(i, timer, cyclic, adj, finish, visited);
+        }}
+        else{
+            for(size_t i = 0; i < vertices; i++){
+                if(!visited[i])
+                    unDirectedCycleDetectionHelper(i, timer, cyclic, parent, adj, finish, visited);
+            }  
+        }
+        return cyclic;
+    }
 }

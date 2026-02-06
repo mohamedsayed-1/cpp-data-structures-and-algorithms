@@ -17,4 +17,5 @@ namespace ds{
     std::vector<size_t> DFS(const ds::Graph& g, size_t start);
     size_t countConnectedComponents(const ds::Graph& g);
     TraversalTimestamps DFSWithTimestamps(const ds::Graph& g);
+    bool isCyclic(const ds::Graph& g);
 }
