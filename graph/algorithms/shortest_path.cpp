@@ -65,4 +65,36 @@ namespace ds{
         }
         return {distance, parent};
     }
+    
+    std::vector<std::vector<int>> floydWarshall(const ds::Graph& g){
+        size_t vertices = g.verticesCount();
+        if(vertices > 500)
+            throw std::runtime_error("Floyd-Marshall algorithm is very slow on graphs with more than 500 vertices... Exiting...");
+        const std::vector<std::vector<ds::Edge>>& adj = g.getAdj();
+        std::vector<std::vector<int>> matrix(vertices, std::vector<int>(vertices, INT_MAX));
+        for (size_t i = 0; i < vertices; i++){
+                matrix[i][i] = 0;
+            }
+        for (size_t i = 0; i < vertices; i++){
+            for (const auto& j : adj[i]){                
+                matrix[i][j.to] = std::min(matrix[i][j.to], j.weight);
+                if(!g.isDirected())
+                    matrix[j.to][i] = std::min(matrix[j.to][i], j.weight);
+            }
+        }
+        for(size_t k = 0; k < vertices; k++){
+            for(size_t i = 0; i < vertices; i++){
+                for(size_t j = 0; j < vertices; j++){
+                    if(matrix[i][k] == INT_MAX || matrix[k][j] == INT_MAX) 
+                        continue;
+                    matrix[i][j] = std::min(matrix[i][j], matrix[i][k] + matrix[k][j]);
+                }
+            }
+        }
+        for(size_t i = 0; i < vertices; i++){
+            if(matrix[i][i] < 0) 
+                throw std::runtime_error("The graph contains a negative cycle");
+        }
+        return matrix;
+    }
 }

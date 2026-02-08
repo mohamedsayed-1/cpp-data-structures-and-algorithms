@@ -12,4 +12,5 @@ namespace ds{
 
     ShortestPathResult Dijkstra(const ds::Graph& g, size_t start);
     ShortestPathResult bellmanFord(const ds::Graph& g, size_t start);
+    std::vector<std::vector<int>> floydWarshall(const ds::Graph& g);
 }
