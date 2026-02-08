@@ -33,4 +33,36 @@ namespace ds{
         }
         return {distance, parent};
     }
+    
+    ShortestPathResult bellmanFord(const ds::Graph& g, size_t start){
+        size_t vertices = g.verticesCount();
+        if(start >= vertices) 
+            throw std::out_of_range("start vertex out of range");
+        const std::vector<std::vector<ds::Edge>>& adj = g.getAdj();
+        ShortestPathResult result;
+        std::vector<int> distance(vertices, INT_MAX), parent(vertices, -1);        
+        distance[start] = 0;
+        for(size_t k = 0; k < vertices - 1; k++){
+            int relaxations = 0;
+            for(size_t j = 0; j < vertices; j++){
+                for(const auto& i : adj[j]){
+                    if(distance[j] != INT_MAX && i.weight + distance[j] < distance[i.to]){
+                        relaxations++;
+                        parent[i.to ] = j;
+                        distance[i.to] = i.weight + distance[j];
+                    }
+                }
+            }
+            if(relaxations == 0) {
+                return {distance, parent};
+            }
+        }
+        for(size_t j = 0; j < vertices; j++){
+            for(const auto& i : adj[j]){
+                if(distance[j] != INT_MAX && i.weight + distance[j] < distance[i.to])
+                    throw std::runtime_error("Negative cycle detected...\n\tbellman-ford cannot work on a graph with a negative cycle");
+            }
+        }
+        return {distance, parent};
+    }
 }

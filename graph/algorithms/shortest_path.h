@@ -11,4 +11,5 @@ namespace ds{
     };
 
     ShortestPathResult Dijkstra(const ds::Graph& g, size_t start);
+    ShortestPathResult bellmanFord(const ds::Graph& g, size_t start);
 }
