@@ -97,4 +97,21 @@ namespace ds{
         }
         return matrix;
     }
+    
+    std::vector<int> findPath(size_t source, size_t destination, const std::vector<int>& parent){
+        std::vector<int> path;
+        if (source >= parent.size() || destination >= parent.size()) 
+            throw std::out_of_range("vertex is not found");
+        int p = destination;
+        while(p != -1){
+            path.push_back(p);
+            if(p == source) {
+                std::reverse(path.begin(), path.end());
+                return path;
+            }
+            p = parent[p];
+        }
+        throw std::runtime_error("these vertices are not connected");
+        return path;
+    }
 }
