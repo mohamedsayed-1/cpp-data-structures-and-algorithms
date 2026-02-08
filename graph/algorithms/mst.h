@@ -15,4 +15,5 @@ namespace ds{
     };
 
     MST kruskal(const Graph& g);
+    MST prim(const Graph& g, size_t source);
 }
