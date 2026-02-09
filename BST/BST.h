@@ -15,6 +15,10 @@ namespace ds{
 
             Node* insert(Type item, Node* tree);
             Node* search(Type item, Node* tree) const;
+            void printInOrder(Node* tree) const;
+            void printPreOrder(Node* tree) const;
+            void printPostOrder(Node* tree) const;
+            int height(Node* tree);
 
         public:
             BST();
@@ -22,6 +26,10 @@ namespace ds{
             bool search(Type item) const;
             size_t size() const;
             bool isEmpty() const;
+            void printInOrder() const;
+            void printPreOrder() const;
+            void printPostOrder() const;
+            int height();
     };
 }
 
@@ -67,4 +75,57 @@ size_t ds::BST<Type>::size() const{
 template <class Type>
 bool ds::BST<Type>::isEmpty() const{
     return count == 0;
+}
+
+template <class Type>
+int ds::BST<Type>::height(Node* tree){
+    if (tree == nullptr) return -1;
+    return 1 + std::max(height(tree->left), height(tree->right));
+}
+
+template <class Type>
+int ds::BST<Type>::height(){
+    return height(root);
+}
+
+template <class Type>
+void ds::BST<Type>::printInOrder(Node* tree)const{
+    if (tree == nullptr) return;
+    printInOrder(tree->left);
+    std::cout << tree->data << " ";
+    printInOrder(tree->right);
+}
+
+template <class Type>
+void ds::BST<Type>::printInOrder()const{
+    printInOrder(root);
+    std::cout << std::endl;
+}
+
+template <class Type>
+void ds::BST<Type>::printPreOrder(Node* tree)const{
+    if (tree == nullptr) return;
+    std::cout << tree->data << " ";
+    printPreOrder(tree->left);
+    printPreOrder(tree->right);
+}
+
+template <class Type>
+void ds::BST<Type>::printPreOrder()const{
+    printPreOrder(root);
+    std::cout << std::endl;
+}
+
+template <class Type>
+void ds::BST<Type>::printPostOrder(Node* tree)const{
+    if (tree == nullptr) return;
+    printPostOrder(tree->left);
+    printPostOrder(tree->right);
+    std::cout << tree->data << " ";
+}
+
+template <class Type>
+void ds::BST<Type>::printPostOrder()const{
+    printPostOrder(root);
+    std::cout << std::endl;
 }
