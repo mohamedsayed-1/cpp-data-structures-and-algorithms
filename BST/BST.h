@@ -19,6 +19,9 @@ namespace ds{
             void printPreOrder(Node* tree) const;
             void printPostOrder(Node* tree) const;
             int height(Node* tree);
+            Node* remove(Type item, Node* tree);
+            Node* min(Node* tree) const;
+            Node* max(Node* tree) const;
 
         public:
             BST();
@@ -30,6 +33,10 @@ namespace ds{
             void printPreOrder() const;
             void printPostOrder() const;
             int height();
+            void remove(Type item);
+            Type min() const;
+            Type max() const;
+
     };
 }
 
@@ -128,4 +135,62 @@ template <class Type>
 void ds::BST<Type>::printPostOrder()const{
     printPostOrder(root);
     std::cout << std::endl;
+}
+
+template <class Type>
+typename ds::BST<Type>::Node* ds::BST<Type>::min(Node* tree) const{
+    if(tree->left == nullptr) return tree;
+    else return min(tree->left);
+}
+
+template <class Type>
+Type ds::BST<Type>::min() const{
+    if(isEmpty()) throw std::runtime_error("Tree is empty");
+    Node* minNode = min(root);
+    return minNode->data;
+}
+
+template <class Type>
+typename ds::BST<Type>::Node* ds::BST<Type>::max(Node* tree) const{
+    if(tree->right == nullptr) return tree;
+    else return max(tree->right);
+}
+
+template <class Type>
+Type ds::BST<Type>::max() const{
+    if(isEmpty()) throw std::runtime_error("Tree is empty");
+    Node* maxNode = max(root);
+    return maxNode->data;
+}
+
+template <class Type>
+typename ds::BST<Type>::Node* ds::BST<Type>::remove(Type item, Node* tree){
+    if (tree == nullptr) return nullptr;
+    if (item < tree->data) tree->left = remove(item, tree->left);
+    if (item > tree->data) tree->right = remove(item, tree->right);
+    if (item == tree->data){
+        if (tree->left == nullptr && tree->right == nullptr){
+            delete tree;
+            count--;
+            return nullptr;
+        }
+        else if((tree->left != nullptr) != (tree->right != nullptr)){
+            Node* next = tree->left != nullptr ? tree->left : tree->right;
+            delete tree;
+            count--;
+            return next;
+        } 
+        else if(tree->left != nullptr && tree->right != nullptr){
+            Node* suc = min(tree->right);
+            tree->data = suc->data;
+            tree->right = remove(suc->data, tree->right);
+            return tree;
+        }
+    }
+    return tree;
+}
+
+template <class Type>
+void ds::BST<Type>::remove(Type item){
+    root = remove(item, root);
 }
