@@ -1,3 +1,7 @@
+#include <iostream>
+#include <stdexcept>
+#include <algorithm>
+
 #pragma once
 namespace ds{
     template <class Type>
@@ -22,6 +26,8 @@ namespace ds{
             Node* remove(Type item, Node* tree);
             Node* min(Node* tree) const;
             Node* max(Node* tree) const;
+            void clear(Node* tree);
+            Node* copy(Node* tree);
 
         public:
             BST();
@@ -36,7 +42,10 @@ namespace ds{
             void remove(Type item);
             Type min() const;
             Type max() const;
-
+            ~BST();
+            BST(const BST& other); 
+            BST& operator=(const BST& other);
+            void clear();
     };
 }
 
@@ -193,4 +202,49 @@ typename ds::BST<Type>::Node* ds::BST<Type>::remove(Type item, Node* tree){
 template <class Type>
 void ds::BST<Type>::remove(Type item){
     root = remove(item, root);
+}
+
+template <class Type>
+ds::BST<Type>::~BST(){
+    clear();
+}
+
+template <class Type>
+ds::BST<Type>::BST(const BST &other){
+    root = copy(other.root);
+    count = other.count;
+}
+
+template <class Type>
+ds::BST<Type>& ds::BST<Type>::operator=(const BST &other){
+    if (this == &other) return *this;
+    Node* newTree = copy(other.root);
+    clear();
+    count = other.count;
+    root = newTree; 
+    return *this;
+}
+
+template <class Type>
+void ds::BST<Type>::clear(Node *tree) {
+    if (tree == nullptr) return;
+    if (tree->left != nullptr) clear(tree->left);
+    if (tree->right != nullptr) clear(tree->right);
+    delete tree;
+}
+
+template <class Type>
+void ds::BST<Type>::clear(){
+    clear(root);
+    root = nullptr;
+    count = 0;
+}
+
+template <class Type>
+typename ds::BST<Type>::Node* ds::BST<Type>::copy(Node* tree){
+    if (tree == nullptr) return nullptr;
+    Node* newNode = new Node(tree->data);
+    newNode->left = copy(tree->left);
+    newNode->right = copy(tree->right);
+    return newNode; 
 }
