@@ -39,5 +39,41 @@ namespace ds{
                 arr[j + 1] = keyItem;
             }
         }
+        static void heapify(int arr[], const int size, int index){
+            if (index < 0) return;
+            int leftChild = -1, rightChild = -1, max = index;
+            if ((2 * index + 1) < size){
+                leftChild = 2 * index + 1;
+            }
+            if ((2 * index + 2) < size){
+                rightChild = 2 * index + 2;
+            }
+            if (rightChild == -1 && leftChild == -1) 
+                return;
+            if (rightChild == -1 && leftChild != -1){
+                max = leftChild;
+            }
+            else{
+                max = arr[leftChild] > arr[rightChild] ? leftChild : rightChild;
+            }
+            if (index != max && arr[index] < arr[max]){
+                std::swap(arr[index], arr[max]);
+                heapify(arr, size, max);        
+            }
+        }
+
+        static void makeMaxHeap(int arr[], const int size){
+            for(int i = size/2-1; i >= 0; i--){
+                heapify(arr, size, i);
+            }
+        }
+
+        void heapSort(int arr[], const int size){
+            makeMaxHeap(arr, size);
+            for(int i = size-1; i > 0; i--){
+                std::swap(arr[0], arr[i]);
+                heapify(arr, i, 0);
+            }
+        }
     }
 }
